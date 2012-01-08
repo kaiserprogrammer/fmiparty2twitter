@@ -1,12 +1,8 @@
 package net.abrandl.sms2twitter;
 
-import java.util.List;
+import java.util.*;
 import org.apache.log4j.Logger;
 
-/**
- *
- * @author abrandl
- */
 public class TwitterTask implements Runnable {
 
     final private static Logger log = Logger.getLogger(TwitterTask.class);
@@ -14,7 +10,7 @@ public class TwitterTask implements Runnable {
     final private TwitterClient twitter;
     final private SmsProvider provider;
 
-    private String append = null;
+    private String append = "";
 
     final public static int TWEET_LENGTH = 140;
 
@@ -31,33 +27,37 @@ public class TwitterTask implements Runnable {
         this.append = append;
     }
 
-    private void handle(String msg) {
-
+    protected void sendMessage(String msg) {
         log.debug("Handling message " + msg);
 
-        int max = (append != null) ? TWEET_LENGTH - append.length() : TWEET_LENGTH;
-
+        int max = TWEET_LENGTH - append.length();
         msg = msg.substring(0, Math.min(msg.length(), max));
-
-
-        if (append != null) {
-            msg += append;
-        }
+        msg += append;
 
         twitter.tweet(msg);
     }
 
     @Override
     public void run() {
+        List<String> inbox = new ArrayList<String>();
         try {
-            List<String> inbox = provider.poll();
-
-            for (String msg : inbox) {
-                handle(msg);
-            }
-
+            inbox = provider.poll();
         } catch (Exception ex) {
             log.error(ex, ex);
+        }
+
+        for (int i = 0; i < inbox.size(); i++) {
+            try {
+                String msg = inbox.get(i);
+                sendMessage(msg);
+            } catch (Exception ex) {
+                i--;
+                try {
+                    log.error("Waiting for 30 seconds now");
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {}
+                log.error(ex, ex);
+            }
         }
     }
 }

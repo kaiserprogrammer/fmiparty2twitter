@@ -10,15 +10,8 @@ import org.apache.log4j.BasicConfigurator;
 
 import winterwell.jtwitter.OAuthSignpostClient;
 
-/**
- *
- * @author abrandl
- */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws Exception {
 
         BasicConfigurator.configure();
@@ -34,14 +27,14 @@ public class Main {
         TwitterClient twitter = new TwitterClient(username, oauth);
 
         Class.forName("org.postgresql.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://andreas-tp:5432/gammu?user=abrandl");
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/test?user=twit&password=twit");
         conn.setAutoCommit(false);
         conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
         SmsProvider smsProvider = new SmsProvider(conn);
 
         TwitterTask task = new TwitterTask(twitter, smsProvider);
-        task.setAppend(" #fmi12");
+        task.setAppend(" #tmn12");
 
         ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 

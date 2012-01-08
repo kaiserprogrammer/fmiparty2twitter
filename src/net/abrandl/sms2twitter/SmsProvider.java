@@ -8,10 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-/**
- *
- * @author abrandl
- */
 public class SmsProvider {
 
     final private static Logger log = Logger.getLogger(SmsProvider.class);
@@ -25,7 +21,7 @@ public class SmsProvider {
     }
 
     private void prepare() throws SQLException {
-        select = conn.prepareStatement("SELECT id, sendernumber, textdecoded, receivingdatetime FROM inbox WHERE tweeted = FALSE");
+        select = conn.prepareStatement("SELECT id, textdecoded FROM inbox WHERE tweeted = FALSE");
         update = conn.prepareStatement("UPDATE inbox SET tweeted = TRUE WHERE id=?");
     }
 

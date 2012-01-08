@@ -4,10 +4,6 @@ import org.apache.log4j.Logger;
 
 import winterwell.jtwitter.*;
 
-/**
- *
- * @author abrandl
- */
 public class TwitterClient {
 
     final private static Logger log = Logger.getLogger(TwitterClient.class);
@@ -21,6 +17,7 @@ public class TwitterClient {
     public static OAuthSignpostClient makeDefaultOAuthClient() {
         return new OAuthSignpostClient(TWITTER_OAUTH_KEY, TWITTER_OAUTH_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
     }
+
     public TwitterClient(String username, OAuthSignpostClient oauthClient) {
         twitter = new Twitter(username, oauthClient);
     }

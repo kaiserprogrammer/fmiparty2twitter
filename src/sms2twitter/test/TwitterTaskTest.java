@@ -1,4 +1,4 @@
-package net.abrandl.sms2twitter;
+package sms2twitter.test;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.util.*;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.*;
+
+import sms2twitter.*;
 
 public class TwitterTaskTest {
 
@@ -101,6 +103,10 @@ public class TwitterTaskTest {
             maxCharsTweetedMessage = Math.max(msg.length(), maxCharsTweetedMessage);
             lastMsg = msg;
         }
+
+        public int getRateLimitLeft() {
+            return 0;
+        }
     }
 
     class MockSmsProvider extends SmsProvider {
@@ -109,6 +115,9 @@ public class TwitterTaskTest {
             super(null);
         }
 
+        public void prepare() {
+
+        }
         public List<String> poll() {
             ArrayList<String> msgs = new ArrayList<String>();
             for (int i = 0; i < messages; i++)

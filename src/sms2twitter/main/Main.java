@@ -1,12 +1,13 @@
-package sms2twitter;
+package sms2twitter.main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import net.abrandl.sms2twitter.*;
 import org.apache.log4j.BasicConfigurator;
+
+import sms2twitter.*;
 
 import winterwell.jtwitter.OAuthSignpostClient;
 
@@ -18,16 +19,15 @@ public class Main {
 
         String username = "fmipartysms";
 
-        final String TWITTER_OAUTH_KEY = "jzl7xHs9svVflj8GG8pyFg";
-        final String TWITTER_OAUTH_SECRET = "n98PLQlc8TGdzaJF2IG0DM308UJhq6A08YciZEnUjU";
-        final String ACCESS_TOKEN = "88661852-PVkKrSCc0l0U6i3gIyRcLuzcD0vEt6zOLAnIebQqQ";
-        final String ACCESS_TOKEN_SECRET = "ylP6OPKi25eHyCHmeltP6wClOn2wS2qdr3tLVdH0LF8";
+        final String TWITTER_OAUTH_KEY = "";
+        final String TWITTER_OAUTH_SECRET = "";
+        final String ACCESS_TOKEN = "";
+        final String ACCESS_TOKEN_SECRET = "";
 
         OAuthSignpostClient oauth = new OAuthSignpostClient(TWITTER_OAUTH_KEY, TWITTER_OAUTH_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
         TwitterClient twitter = new TwitterClient(username, oauth);
 
-        Class.forName("org.postgresql.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/test?user=twit&password=twit");
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://juergenbickert.de:5432/smsd?user=smsd");
         conn.setAutoCommit(false);
         conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
@@ -38,7 +38,7 @@ public class Main {
 
         ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 
-        pool.scheduleWithFixedDelay(task, 0, 5, TimeUnit.SECONDS);
+        pool.scheduleWithFixedDelay(task, 0, 1, TimeUnit.SECONDS);
 
     }
 }
